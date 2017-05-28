@@ -1,0 +1,10 @@
+{
+  "name": "webarchive",
+  "version": "1.0.0",
+  "description": "screenshot for my web pages",
+  "main": "index.js",
+  "author": "Outsider",
+  "license": "MIT",
+  "dependencies": {
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "side-effect-lambdas",
+  "version": "1.0.0",
+  "description": "My AWS Lambdas",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "find ./functions/* -name package.json -maxdepth 1 -execdir npm install \\;",
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/outsideris/lambdas.git"
+  },
+  "keywords": [],
+  "author": "Outsider",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/outsideris/lambdas/issues"
+  },
+  "homepage": "https://github.com/outsideris/lambdas#readme",
+  "devDependencies": {
+    "aws-sdk": "^2.58.0",
+    "chai": "^4.0.0",
+    "mocha": "^3.4.2"
+  }
+}
