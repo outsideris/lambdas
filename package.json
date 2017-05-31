@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "find ./functions/* -name package.json -maxdepth 1 -execdir npm install \\;",
-    "test": "mocha test"
+    "test": "mocha -t 15000 test/**/*.spec.js",
+    "pretest:docker": "docker build --rm -t test-lambda:test .",
+    "test:docker": "docker run --rm -t test-lambda:test"
   },
   "repository": {
     "type": "git",

@@ -3,6 +3,7 @@
   "description": "my own lambdas",
   "memory": 128,
   "timeout": 5,
+  "type": "nodejs6.10",
   "role": "arn:aws:iam::410655858509:role/sideeffect_lambda_function",
   "environment": {}
 }
