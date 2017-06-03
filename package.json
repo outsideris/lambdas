@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "find ./functions/* -name package.json -maxdepth 1 -execdir npm install \\;",
+    "lint": "eslint .",
     "test": "mocha -t 15000 test/**/*.spec.js",
     "pretest:docker": "docker build --rm -t test-lambda:test .",
     "test:docker": "docker run --rm -t test-lambda:test"
@@ -23,6 +24,10 @@
   "devDependencies": {
     "aws-sdk": "^2.58.0",
     "chai": "^4.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.3.0",
+    "eslint-plugin-mocha": "^4.9.0",
     "mocha": "^3.4.2"
   }
 }
