@@ -1,0 +1,8 @@
+{
+  "name": "webarchive",
+  "description": "screenshot web sites",
+  "memory": 128,
+  "timeout": 60,
+  "environment": {
+  }
+}
