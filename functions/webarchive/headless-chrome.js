@@ -4,7 +4,6 @@ const chrome = require('chrome-remote-interface');
 
 // to find headless shell on Linux.
 // In macOS, it will find chrome-canay automatically.
-process.env.LIGHTHOUSE_CHROMIUM_PATH = path.join(__dirname, './chrome');
 
 const launchChrome = (size = '1366,3000', headless = true) => {
   console.log('launching headless chrome....');
