@@ -1,4 +1,4 @@
-const { screenshot } = require('../../functions/webarchive/headless-chrome');
+const { screenshot } = require('./headless-chrome');
 const { expect } = require('chai');
 
 describe('headless chrome', () => {
