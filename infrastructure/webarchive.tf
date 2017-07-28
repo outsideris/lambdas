@@ -30,7 +30,8 @@ data "aws_iam_policy_document" "webarchive_allow_to_save_s3" {
     ]
 
     resources = [
-      "${aws_s3_bucket.kr_sideeffect_webarchive.arn}/*"
+      "${aws_s3_bucket.kr_sideeffect_webarchive.arn}/*",
+      "${aws_s3_bucket.kr_sideeffect_webarchive_test.arn}/*"
     ]
   }
 }
@@ -41,4 +42,10 @@ resource "aws_iam_policy_attachment" "lambda-s3-policy-attachment" {
   groups = []
   users = []
   roles = ["${aws_iam_role.sideeffect_lambda_function.name}"]
+}
+
+// a bucket to test
+resource "aws_s3_bucket" "kr_sideeffect_webarchive_test" {
+  bucket = "kr.sideeffect.webarchive-test"
+  acl    = "private"
 }
