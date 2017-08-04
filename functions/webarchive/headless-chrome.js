@@ -1,6 +1,7 @@
-const path = require('path');
 const { ChromeLauncher } = require('lighthouse/lighthouse-cli/chrome-launcher');
 const chrome = require('chrome-remote-interface');
+
+const { filenamifyUrl } = require('./util');
 
 // to find headless shell on Linux.
 // In macOS, it will find chrome-canay automatically.
@@ -65,13 +66,13 @@ module.exports = {
             .then(() => Emulation.setVisibleSize({ width, height }))
             .then(() => Page.navigate({ url })) // Navigate to target page
             .then(Page.loadEventFired)
-            .then(() => Page.captureScreenshot({ format: 'png' }))
+            .then(() => Page.captureScreenshot({ format: 'png', fromSurface: true }))
             .then((screenshot) => {
               const buffer = new Buffer(screenshot.data, 'base64');
               protocol.close();
               return buffer;
             })
-            .then(buffer => cb(null, buffer))
+            .then(buffer => cb(null, buffer, filenamifyUrl(url)))
             .catch((err) => {
               console.error(err);
               cb(err);

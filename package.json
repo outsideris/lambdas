@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "find ./functions/* -name package.json -maxdepth 1 -execdir npm install \\;",
     "lint": "eslint .",
-    "test": "mocha -t 15000 functions/**/*.spec.js",
+    "test": "AWS_S3_BUCKET=kr.sideeffect.webarchive-test mocha -t 60000 functions/**/*.spec.js",
     "pretest:docker": "docker build --rm -t test-lambda:test .",
     "test:docker": "docker run --rm -t test-lambda:test"
   },
