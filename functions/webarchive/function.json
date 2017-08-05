@@ -5,7 +5,7 @@
   "memory": 128,
   "timeout": 60,
   "environment": {
-    "LIGHTHOUSE_CHROMIUM_PATH": "/var/task/chrome",
+    "CHROME_PATH": "/var/task/chrome",
     "AWS_S3_BUCKET": "kr.sideeffect.webarchive"
   }
 }

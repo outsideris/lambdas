@@ -10,11 +10,8 @@
     "build:prod": "webpack -p"
   },
   "dependencies": {
+    "chrome-launcher": "^0.4.0",
     "chrome-remote-interface": "^0.23.1",
-    "filenamify-url": "^1.0.0",
-    "lighthouse": "^2.0.0"
-  },
-  "devDependencies": {
-    "webpack": "^2.6.1"
+    "filenamify-url": "^1.0.0"
   }
 }
