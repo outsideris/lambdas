@@ -5,7 +5,12 @@
   "memory": 128,
   "timeout": 60,
   "environment": {
-    "CHROME_PATH": "/var/task/chrome",
-    "AWS_S3_BUCKET": "kr.sideeffect.webarchive"
+    "CHROME_PATH": "/var/task/headless_shell",
+    "AWS_S3_BUCKET": "kr.sideeffect.webarchive",
+    "URLS": ""
+  },
+  "hooks": {
+    "build": "../../node_modules/.bin/webpack --config ./webpack.config.js --bail",
+    "clean": "rm -fr lib"
   }
 }

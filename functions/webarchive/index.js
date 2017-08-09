@@ -1,5 +1,12 @@
-console.log('starting function')
-exports.handle = function(e, ctx, cb) {
-  console.log('processing event: %j', e)
-  cb(null, { hello: 'world' })
-}
+const { run } = require('./run');
+
+console.log('starting function');
+
+exports.handle = (e, ctx, cb) => {
+  const urls = process.env.URLS.split(',') || [];
+  console.log('urls:', urls);
+  run(urls, (err) => {
+    console.log('completed');
+    cb(err);
+  });
+};

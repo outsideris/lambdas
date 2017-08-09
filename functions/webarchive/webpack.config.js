@@ -8,5 +8,8 @@ module.exports = {
     filename: 'dist.js',
     libraryTarget: 'commonjs2',
   },
+  externals: {
+    'aws-sdk': 'aws-sdk',
+  },
 };
 

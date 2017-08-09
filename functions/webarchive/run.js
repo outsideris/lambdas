@@ -17,7 +17,7 @@ const run = (urls = [], cb) => {
   if (!u) { return cb(); }
 
   return takeSnapshot(u, (err) => {
-    if (err) { console.err('failed for ', u, err); }
+    if (err) { console.error('failed for ', u, err); }
     run(urls, cb);
   });
 };

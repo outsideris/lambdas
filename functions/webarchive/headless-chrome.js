@@ -3,8 +3,6 @@ const CDP = require('chrome-remote-interface');
 
 const { filenamifyUrl } = require('./util');
 
-// to find headless shell on Linux.
-// In macOS, it will find chrome-canay automatically.
 module.exports = {
   screenshot: (url, size = '1366,3000', cb) => {
     console.log(`screenshot: url=${url} size=${size}`);
