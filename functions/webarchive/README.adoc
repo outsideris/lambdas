@@ -1,0 +1,14 @@
+= webarchive
+
+Take a screenshot websites
+
+To run lambda function locally,
+
+[source,sh]
+....
+$ docker run -e "AWS_ACCESS_KEY_ID=YOUR_KEY" \
+  -e "AWS_SECRET_ACCESS_KEY=YOUR_KEY" \
+  -e "CHROME_PATH=/var/task/headless_shell" \
+  -e "URLS=https://github.com,https://google.com" \
+  -v "$PWD":/var/task lambci/lambda:nodejs6.10 index.handle
+....
