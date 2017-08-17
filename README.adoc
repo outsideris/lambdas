@@ -1,1 +1,13 @@
 = My AWS Lambdas
+:icons: font
+:toc:
+
+To get headless chrome, run below.
+
+[source,sh]
+----
+$ npm run build
+----
+
+== Functions
+* webarchive : take a snapshot for websites with headless chrome

@@ -6,8 +6,6 @@
   "author": "Outsider",
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
-    "build:prod": "webpack -p"
   },
   "dependencies": {
     "chrome-launcher": "^0.4.0",

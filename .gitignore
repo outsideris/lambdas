@@ -6,4 +6,4 @@ dist.js
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup
-lib/headless_shell
+headless_shell

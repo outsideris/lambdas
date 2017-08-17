@@ -10,7 +10,7 @@
     "URLS": ""
   },
   "hooks": {
-    "build": "../../node_modules/.bin/webpack --config ./webpack.config.js --bail",
-    "clean": "rm -fr lib"
+    "build": "npm run build --prefix ../../ && ../../node_modules/.bin/webpack --config ./webpack.config.js --bail",
+    "clean": "rm dist.js"
   }
 }
