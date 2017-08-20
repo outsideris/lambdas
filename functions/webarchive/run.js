@@ -1,4 +1,4 @@
-const { screenshot } = require('./headless-chrome');
+const { screenshot, kill } = require('./headless-chrome');
 const { saveImage } = require('./storage');
 
 const takeSnapshot = (url, cb) => {
@@ -13,7 +13,10 @@ const takeSnapshot = (url, cb) => {
 
 const run = (urls = [], cb) => {
   const u = urls.pop();
-  if (!u) { return cb(); }
+  if (!u) {
+    kill()
+      .then(() => cb());
+  }
 
   return takeSnapshot(u, (err) => {
     if (err) { console.error('failed for ', u, err); }

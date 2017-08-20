@@ -1,8 +1,10 @@
 const { expect } = require('chai');
 
-const { screenshot } = require('./headless-chrome');
+const { screenshot, kill } = require('./headless-chrome');
 
 describe('headless chrome', () => {
+  after(() => kill());
+
   describe('screenshot', () => {
     it('should take a screenshot', (done) => {
       screenshot('https://google.com', undefined, (err, buffer) => {

@@ -86,4 +86,10 @@ module.exports = {
         });
       });
   },
+  kill: () => {
+    if (launchedChrome) {
+      return launchedChrome.kill();
+    }
+    return new Promise(resolve => resolve());
+  },
 };
