@@ -5,10 +5,9 @@ const takeSnapshot = (url, cb) => {
   screenshot(url, undefined, (err, buffer, filename) => {
     if (err) { return cb(err); }
 
-    return saveImage(buffer, filename, (error) => {
-      if (error) { return cb(error); }
-      return cb();
-    });
+    return saveImage(buffer, filename)
+      .then(() => cb(null))
+      .catch(error => cb(error));
   });
 };
 

@@ -7,6 +7,7 @@ const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
 const BUCKET = process.env.AWS_S3_BUCKET || 'kr.sideeffect.webarchive';
 
+const putObject = Promise.promisify(s3.putObject, { context: s3 });
 const getObject = Promise.promisify(s3.getObject, { context: s3 });
 const writeFile = Promise.promisify(fs.writeFile);
 const access = Promise.promisify(fs.access);
@@ -26,10 +27,10 @@ const downloadFontAndSave = (path, targetDir, filename) => {
 };
 
 module.exports = {
-  saveImage: (image, filename, cb) => {
+  saveImage: Promise.method((image, filename, cb) => {
     console.log('image to save: ', filename);
-    if (!image) { cb(new Error('image is required.')); }
-    if (!filename) { cb(new Error('filename is required.')); }
+    if (!image) { throw new Error('image is required.'); }
+    if (!filename) { throw new Error('filename is required.'); }
 
     const year = (new Date()).getUTCFullYear();
 
@@ -38,12 +39,8 @@ module.exports = {
       Key: `${year}/${filename}`,
       Body: image,
     };
-    s3.putObject(params, (err, data) => {
-      if (err) { return cb(err); }
-
-      return cb(null, data);
-    });
-  },
+    return putObject(params);
+  }),
   downloadFont: Promise.method((path) => {
     if (!path) { throw new Error('font path is required.'); }
     console.log('download font: ', path);

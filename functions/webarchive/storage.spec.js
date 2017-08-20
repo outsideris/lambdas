@@ -23,14 +23,13 @@ describe('storage module\'s', () => {
       });
     });
 
-    it('should save the image on S3', (done) => {
+    it('should save the image on S3', () => {
       const filename = (new Date()).getTime();
 
-      saveImage(imgBuf, filename, (err, data) => {
-        if (err) { return done(err); }
-        expect(data).to.have.property('ETag');
-        return done();
-      });
+      return saveImage(imgBuf, filename)
+        .then((data) => {
+          expect(data).to.have.property('ETag');
+        });
     });
   });
 
