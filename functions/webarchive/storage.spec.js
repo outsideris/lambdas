@@ -1,10 +1,13 @@
 const path = require('path');
-const { readFile } = require('fs');
+const fs = require('fs');
 const { expect } = require('chai');
+const { join } = require('path');
+const Promise = require('bluebird');
 
 process.env.AWS_S3_BUCKET = 'kr.sideeffect.webarchive-test';
 
-const { saveImage } = require('./storage');
+const { saveImage, downloadFont } = require('./storage');
+const access = Promise.promisify(fs.access);
 
 describe('storage module\'s', () => {
   describe('saveImage()', () => {
@@ -12,7 +15,7 @@ describe('storage module\'s', () => {
 
     before((done) => {
       const img = path.join(__dirname, 'img/github.png');
-      readFile(img, (err, data) => {
+      fs.readFile(img, (err, data) => {
         if (err) { return done(err); }
 
         imgBuf = data;
@@ -28,6 +31,15 @@ describe('storage module\'s', () => {
         expect(data).to.have.property('ETag');
         return done();
       });
+    });
+  });
+
+  describe('downloadFont()', () => {
+    it('should download the font from S3', () => {
+      const targetDir = join(__dirname, '.fonts');
+      const filename = 'NotoSansCJKtc-Regular.otf';
+      return downloadFont(`fonts/${filename}`)
+        .then(() => access(`${targetDir}/${filename}`, fs.constants.F_OK));
     });
   });
 });

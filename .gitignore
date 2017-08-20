@@ -7,3 +7,6 @@ dist.js
 terraform.tfstate
 terraform.tfstate.backup
 headless_shell
+.fontconfig/
+.fonts/
+.pki/
