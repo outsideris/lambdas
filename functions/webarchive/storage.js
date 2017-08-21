@@ -1,5 +1,4 @@
 const AWS = require('aws-sdk'); // eslint-disable-line
-const { join } = require('path');
 const fs = require('fs');
 const Promise = require('bluebird');
 
@@ -41,10 +40,9 @@ module.exports = {
     };
     return putObject(params);
   }),
-  downloadFont: Promise.method((path) => {
+  downloadFont: Promise.method((path, targetDir) => {
     if (!path) { throw new Error('font path is required.'); }
     console.log('download font: ', path);
-    const targetDir = join(__dirname, '.fonts');
     const filename = path.substr(path.lastIndexOf('/') + 1);
 
     return access(`${targetDir}/${filename}`, fs.constants.F_OK)

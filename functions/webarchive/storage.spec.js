@@ -37,7 +37,7 @@ describe('storage module\'s', () => {
     it('should download the font from S3', () => {
       const targetDir = join(__dirname, '.fonts');
       const filename = 'NotoSansCJKtc-Regular.otf';
-      return downloadFont(`fonts/${filename}`)
+      return downloadFont(`fonts/${filename}`, targetDir)
         .then(() => access(`${targetDir}/${filename}`, fs.constants.F_OK));
     });
   });

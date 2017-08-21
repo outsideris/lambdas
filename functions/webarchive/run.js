@@ -14,11 +14,12 @@ const takeSnapshot = (url, cb) => {
 const run = (urls = [], cb) => {
   const u = urls.pop();
   if (!u) {
-    kill()
-      .then(() => cb());
+    return kill()
+      .then(() => cb())
+      .catch(err => cb(err));
   }
 
-  return takeSnapshot(u, (err) => {
+  return takeScreenshot(u, (err) => {
     if (err) { console.error('failed for ', u, err); }
     run(urls, cb);
   });
