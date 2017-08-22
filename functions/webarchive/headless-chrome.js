@@ -7,6 +7,7 @@ const { filenamifyUrl } = require('./util');
 const version = Promise.promisify(CDP.Version);
 
 let launchedChrome = null;
+let connectedCDP = null;
 const launchChrome = () => {
   if (launchedChrome) {
     return new Promise(resolve => resolve(launchedChrome));
@@ -37,6 +38,12 @@ const launchChrome = () => {
   .then(([info, chrome]) => {
     console.log('version: ', info);
     return chrome;
+  })
+  .then(chrome => CDP({ host: 'localhost', port: chrome.port }))
+  .then((client) => {
+    console.log('Chrome devtools protocol connected');
+    connectedCDP = client;
+    return client;
   });
 };
 
@@ -46,48 +53,46 @@ module.exports = {
     const [width, height] = size.split(',').map(d => +d);
 
     launchChrome()
-      .then((chrome) => {
-        return CDP({ host: 'localhost', port: chrome.port }, (client) => {
-          const { DOM, Emulation, Network, Page } = client;
+      .then(() => {
+        const { DOM, Emulation, Network, Page } = connectedCDP;
 
-          Page.enable()
-            .then(DOM.enable)
-            .then(Network.enable)
-            .then(() => {
-              // set up viewport resolution, etc.
-              const deviceMetrics = {
-                width,
-                height,
-                deviceScaleFactor: 0,
-                mobile: false,
-                fitWindow: false,
-              };
+        Page.enable()
+          .then(DOM.enable)
+          .then(Network.enable)
+          .then(() => {
+            // set up viewport resolution, etc.
+            const deviceMetrics = {
+              width,
+              height,
+              deviceScaleFactor: 0,
+              mobile: false,
+              fitWindow: false,
+            };
 
-              return Emulation.setDeviceMetricsOverride(deviceMetrics);
-            })
-            .then(() => Emulation.setVisibleSize({ width, height }))
-            .then(() => Page.navigate({ url })) // navigate to target page
-            .then(Page.loadEventFired)
-            .then(() => Page.captureScreenshot({ format: 'png', fromSurface: true }))
-            .then((screenshot) => {
-              const buffer = new Buffer(screenshot.data, 'base64');
-              client.close();
-              return buffer;
-            })
-            .then(buffer => cb(null, buffer, filenamifyUrl(url)))
-            .catch((err) => {
-              console.error(err);
-              client.close();
-              cb(err);
-            });
-        }).on('error', (err) => {
-          console.error(err);
-          cb(err);
-        });
+            return Emulation.setDeviceMetricsOverride(deviceMetrics);
+          })
+          .then(() => Emulation.setVisibleSize({ width, height }))
+          .then(() => Page.navigate({ url })) // navigate to target page
+          .then(Page.loadEventFired)
+          .then(() => Page.captureScreenshot())
+          .then((screenshot) => {
+            const buffer = new Buffer(screenshot.data, 'base64');
+            return buffer;
+          })
+          .then(buffer => cb(null, buffer, filenamifyUrl(url)))
+          .catch((err) => {
+            console.error(err);
+            cb(err);
+          });
+      })
+      .catch((err) => {
+        console.error(err);
+        cb(err);
       });
   },
   kill: () => {
     if (launchedChrome) {
+      if (connectedCDP) { connectedCDP.close(); }
       return launchedChrome.kill();
     }
     return new Promise(resolve => resolve());
