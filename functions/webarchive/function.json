@@ -2,10 +2,10 @@
   "name": "webarchive",
   "description": "screenshot web sites",
   "handler": "dist.handle",
-  "memory": 128,
-  "timeout": 60,
+  "memory": 448,
+  "timeout": 120,
   "environment": {
-    "HOME": "/var/task",
+    "HOME": "/tmp",
     "CHROME_PATH": "/var/task/headless_shell",
     "AWS_S3_BUCKET": "kr.sideeffect.webarchive",
     "URLS": ""
