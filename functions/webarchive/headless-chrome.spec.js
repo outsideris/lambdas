@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const fs = require('fs');
 
 const { screenshot, kill } = require('./headless-chrome');
 
@@ -22,6 +23,16 @@ describe('headless chrome', () => {
           if (err2) { return done(err2); }
           expect(buffer).to.be.an.instanceof(Buffer);
           return done();
+        });
+      });
+    });
+
+    it.skip('to check screenshot', (done) => {
+      screenshot('https://github.com', undefined, (err, buffer) => {
+        if (err) { return done(err); }
+        expect(buffer).to.be.an.instanceof(Buffer);
+        fs.writeFile('./github.png', buffer, (err) => {
+          return done(err);
         });
       });
     });
