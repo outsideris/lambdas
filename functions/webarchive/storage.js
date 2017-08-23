@@ -13,6 +13,7 @@ const access = Promise.promisify(fs.access);
 const mkdir = Promise.promisify(fs.mkdir);
 
 const downloadFontAndSave = (path, targetDir, filename) => {
+  console.log('start downloading font:', path);
   return getObject({ Bucket: BUCKET, Key: path })
     .then(data => access(`${targetDir}`, fs.constants.F_OK)
       .catch((err) => {
@@ -46,6 +47,7 @@ module.exports = {
     const filename = path.substr(path.lastIndexOf('/') + 1);
 
     return access(`${targetDir}/${filename}`, fs.constants.F_OK)
+      .then(() => console.log('skip downloading font'))
       .catch((err) => {
         if (err.code !== 'ENOENT') {
           throw err;

@@ -93,6 +93,7 @@ module.exports = {
   kill: () => {
     if (launchedChrome) {
       if (connectedCDP) { connectedCDP.close(); }
+      console.log('killing the headless chrome');
       return launchedChrome.kill();
     }
     return new Promise(resolve => resolve());

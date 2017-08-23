@@ -1,7 +1,7 @@
 const { screenshot, kill } = require('./headless-chrome');
 const { saveImage } = require('./storage');
 
-const takeSnapshot = (url, cb) => {
+const takeScreenshot = (url, cb) => {
   screenshot(url, undefined, (err, buffer, filename) => {
     if (err) { return cb(err); }
 
