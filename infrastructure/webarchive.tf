@@ -49,3 +49,23 @@ resource "aws_s3_bucket" "kr_sideeffect_webarchive_test" {
   bucket = "kr.sideeffect.webarchive-test"
   acl    = "private"
 }
+
+// cloudwatch trigger
+resource "aws_cloudwatch_event_rule" "webarchive" {
+  name = "webarchive-rule"
+  description = "every 9 am Sat."
+  schedule_expression = "cron(0 9 ? * 7 *)"
+}
+
+resource "aws_cloudwatch_event_target" "webarchive_target" {
+  rule = "${aws_cloudwatch_event_rule.webarchive.name}"
+  arn = "${var.apex_function_webarchive}"
+}
+
+resource "aws_lambda_permission" "allow_cloudwatch_to_call_webarchive" {
+  statement_id = "AllowExecutionFromCloudWatch"
+  action = "lambda:InvokeFunction"
+  function_name = "${var.apex_function_webarchive_name}"
+  principal = "events.amazonaws.com"
+  source_arn = "${aws_cloudwatch_event_rule.webarchive.arn}"
+}
