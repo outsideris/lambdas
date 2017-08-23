@@ -71,9 +71,9 @@ module.exports = {
 
             return Emulation.setDeviceMetricsOverride(deviceMetrics);
           })
-          .then(() => Emulation.setVisibleSize({ width, height }))
           .then(() => Page.navigate({ url })) // navigate to target page
           .then(Page.loadEventFired)
+          .then(() => Emulation.setVisibleSize({ width, height }))
           .then(() => Page.captureScreenshot())
           .then((screenshot) => {
             const buffer = new Buffer(screenshot.data, 'base64');
