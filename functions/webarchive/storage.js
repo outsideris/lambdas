@@ -23,11 +23,11 @@ const downloadFontAndSave = (path, targetDir, filename) => {
         return Promise.all([data]);
       })
     )
-    .then(([data]) => writeFile(`${targetDir}/${filename}`, data.Body))
+    .then(([data]) => writeFile(`${targetDir}/${filename}`, data.Body));
 };
 
 module.exports = {
-  saveImage: Promise.method((image, filename, cb) => {
+  saveImage: Promise.method((image, filename) => {
     console.log('image to save: ', filename);
     if (!image) { throw new Error('image is required.'); }
     if (!filename) { throw new Error('filename is required.'); }

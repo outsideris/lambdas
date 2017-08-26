@@ -1,28 +1,20 @@
 const { screenshot, kill } = require('./headless-chrome');
 const { saveImage } = require('./storage');
+const { filenamifyUrl } = require('./util');
 
-const takeScreenshot = (url, cb) => {
-  screenshot(url, undefined, (err, buffer, filename) => {
-    if (err) { return cb(err); }
-
-    return saveImage(buffer, filename)
-      .then(() => cb(null))
-      .catch(error => cb(error));
-  });
+const takeScreenshot = (url) => {
+  return screenshot(url)
+    .then((buffer) => saveImage(buffer, filenamifyUrl(url)));
 };
 
-const run = (urls = [], cb) => {
+const run = (urls = []) => {
   const u = urls.pop();
-  if (!u) {
-    return kill()
-      .then(() => cb())
-      .catch(err => cb(err));
-  }
-
-  return takeScreenshot(u, (err) => {
-    if (err) { console.error('failed for ', u, err); }
-    run(urls, cb);
-  });
+  if (!u) { return kill(); }
+  return takeScreenshot(u)
+    .then(() => run(urls))
+    .catch((err) => {
+      console.error('failed for ', u, err);
+    });
 };
 
 module.exports = {

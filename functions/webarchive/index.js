@@ -10,12 +10,10 @@ exports.handle = (e, ctx, cb) => {
   console.log('urls:', urls);
   const targetDir = join('/tmp', '.fonts');
   return downloadFont('fonts/NotoSansCJKtc-Regular.otf', targetDir)
+    .then(() => run(urls))
     .then(() => {
-      return run(urls, (err) => {
-        console.log('completed');
-        if (err) { return ctx.fail(err); }
-        return ctx.succeed();
-      });
+      console.log('completed');
+      return ctx.succeed();
     })
     .catch((err) => {
       ctx.fail(err);

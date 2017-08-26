@@ -4,37 +4,34 @@ const fs = require('fs');
 const { screenshot, kill } = require('./headless-chrome');
 
 describe('headless chrome', () => {
-  after(() => kill());
+  after(kill);
 
   describe('screenshot', () => {
-    it('should take a screenshot', (done) => {
-      screenshot('https://google.com', undefined, (err, buffer) => {
-        if (err) { return done(err); }
-        expect(buffer).to.be.an.instanceof(Buffer);
-        return done();
-      });
+    it('should take a screenshot', () => {
+      return screenshot('https://google.com')
+        .then((buffer) => {
+          expect(buffer).to.be.an.instanceof(Buffer);
+        });
     });
 
-    it('should take multiple screenshots once launching chrome', (done) => {
-      screenshot('https://google.com', undefined, (err) => {
-        if (err) { return done(err); }
-
-        return screenshot('https://github.com', undefined, (err2, buffer) => {
-          if (err2) { return done(err2); }
+    it('should take multiple screenshots once launching chrome', () => {
+      return screenshot('https://google.com')
+        .then(() => screenshot('https://github.com'))
+        .then((buffer) => {
           expect(buffer).to.be.an.instanceof(Buffer);
-          return done();
         });
-      });
     });
 
     it.skip('to check screenshot', (done) => {
-      screenshot('https://github.com', undefined, (err, buffer) => {
-        if (err) { return done(err); }
-        expect(buffer).to.be.an.instanceof(Buffer);
-        fs.writeFile('./github.png', buffer, (err) => {
-          return done(err);
+      screenshot('https://github.com')
+        .then((buffer) => {
+          expect(buffer).to.be.an.instanceof(Buffer);
+
+          fs.writeFile('./github.png', buffer, (err) => {
+            if (err) { return done(err); }
+            return done(err);
+          });
         });
-      });
     });
   });
 });

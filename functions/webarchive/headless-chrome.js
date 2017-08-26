@@ -1,13 +1,9 @@
 const chromeLauncher = require('chrome-launcher');
 const CDP = require('chrome-remote-interface');
-const Promise = require('bluebird');
-
-const { filenamifyUrl } = require('./util');
-
-const version = Promise.promisify(CDP.Version);
 
 let launchedChrome = null;
 let connectedCDP = null;
+
 const launchChrome = () => {
   if (launchedChrome) {
     return new Promise(resolve => resolve(launchedChrome));
@@ -18,9 +14,6 @@ const launchChrome = () => {
       '--headless',
       '--disable-gpu',
       '--no-sandbox',
-      '--homedir=/tmp',
-      '--data-path=/tmp/data-path',
-      '--disk-cache-dir=/tmp/cache-dir',
       '--vmodule', // These two options are needed in lambda
       '--single-process',
     ],
@@ -31,15 +24,9 @@ const launchChrome = () => {
     launchedChrome = chrome;
     return chrome;
   })
-  .then(chrome => Promise.all([
-    version({ host: 'localhost', port: chrome.port }),
-    chrome,
-  ]))
-  .then(([info, chrome]) => {
-    console.log('version: ', info);
-    return chrome;
-  })
-  .then(chrome => CDP({ host: 'localhost', port: chrome.port }))
+  .then(chrome => CDP.Version({ host: 'localhost', port: chrome.port }))
+  .then(info => console.log('version: ', info))
+  .then(() => CDP({ host: 'localhost', port: launchedChrome.port }))
   .then((client) => {
     console.log('Chrome devtools protocol connected');
     connectedCDP = client;
@@ -48,15 +35,15 @@ const launchChrome = () => {
 };
 
 module.exports = {
-  screenshot: (url, size = '1366,3000', cb) => {
+  screenshot: (url, size = '1366,3000') => {
     console.log(`screenshot: url=${url} size=${size}`);
     const [width, height] = size.split(',').map(d => +d);
 
-    launchChrome()
+    return launchChrome()
       .then(() => {
         const { DOM, Emulation, Network, Page } = connectedCDP;
 
-        Page.enable()
+        return Page.enable()
           .then(DOM.enable)
           .then(Network.enable)
           .then(() => {
@@ -74,20 +61,12 @@ module.exports = {
           .then(() => Page.navigate({ url })) // navigate to target page
           .then(Page.loadEventFired)
           .then(() => Emulation.setVisibleSize({ width, height }))
-          .then(() => Page.captureScreenshot())
-          .then((screenshot) => {
-            const buffer = new Buffer(screenshot.data, 'base64');
-            return buffer;
-          })
-          .then(buffer => cb(null, buffer, filenamifyUrl(url)))
-          .catch((err) => {
-            console.error(err);
-            cb(err);
-          });
+          .then(Page.captureScreenshot)
+          .then(screenshot => new Buffer(screenshot.data, 'base64'));
       })
       .catch((err) => {
         console.error(err);
-        cb(err);
+        throw err;
       });
   },
   kill: () => {
