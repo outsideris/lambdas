@@ -1,12 +1,13 @@
 const path = require('path');
 const fs = require('fs');
-const { expect } = require('chai');
+const { expect } = require('chai'); // eslint-disable-line
 const { join } = require('path');
 const Promise = require('bluebird');
 
 process.env.AWS_S3_BUCKET = 'kr.sideeffect.webarchive-test';
 
 const { saveImage, downloadFont } = require('./storage');
+
 const access = Promise.promisify(fs.access);
 
 describe('storage module\'s', () => {

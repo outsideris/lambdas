@@ -2,10 +2,10 @@ const { screenshot, kill } = require('./headless-chrome');
 const { saveImage } = require('./storage');
 const { filenamifyUrl } = require('./util');
 
-const takeScreenshot = (url) => {
-  return screenshot(url)
-    .then((buffer) => saveImage(buffer, filenamifyUrl(url)));
-};
+const takeScreenshot = url =>
+  screenshot(url)
+    .then(buffer => saveImage(buffer, filenamifyUrl(url)));
+
 
 const run = (urls = []) => {
   const u = urls.pop();

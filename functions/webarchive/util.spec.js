@@ -1,5 +1,5 @@
 const { filenamifyUrl } = require('./util');
-const { expect } = require('chai');
+const { expect } = require('chai'); // eslint-disable-line
 
 describe('util: ', () => {
   describe('normalizeUrl', () => {

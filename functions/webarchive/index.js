@@ -5,7 +5,7 @@ const { downloadFont } = require('./storage');
 
 console.log('starting function');
 
-exports.handle = (e, ctx, cb) => {
+exports.handle = (e, ctx) => {
   const urls = process.env.URLS.split(',') || [];
   console.log('urls:', urls);
   const targetDir = join('/tmp', '.fonts');

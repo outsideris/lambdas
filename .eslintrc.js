@@ -6,5 +6,8 @@ module.exports = {
   "plugins": [
     "import",
     "mocha"
-  ]
+  ],
+  "rules": {
+    "no-console": ["off"]
+  }
 };

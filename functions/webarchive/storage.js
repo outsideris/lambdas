@@ -15,14 +15,14 @@ const mkdir = Promise.promisify(fs.mkdir);
 const downloadFontAndSave = (path, targetDir, filename) => {
   console.log('start downloading font:', path);
   return getObject({ Bucket: BUCKET, Key: path })
-    .then(data => access(`${targetDir}`, fs.constants.F_OK)
-      .catch((err) => {
-        if (err.code === 'ENOENT') {
-          return Promise.all([data, mkdir(targetDir)]);
-        }
-        return Promise.all([data]);
-      })
-    )
+    .then(data =>
+      access(`${targetDir}`, fs.constants.F_OK)
+        .catch((err) => {
+          if (err.code === 'ENOENT') {
+            return Promise.all([data, mkdir(targetDir)]);
+          }
+          return Promise.all([data]);
+        }))
     .then(([data]) => writeFile(`${targetDir}/${filename}`, data.Body));
 };
 
