@@ -1,37 +1,20 @@
-const chromeLauncher = require('chrome-launcher');
-const CDP = require('chrome-remote-interface');
+const puppeteer = require('puppeteer');
 
 let launchedChrome = null;
-let connectedCDP = null;
 
 const launchChrome = () => {
   if (launchedChrome) {
     return new Promise(resolve => resolve(launchedChrome));
   }
 
-  return chromeLauncher.launch({
-    chromeFlags: [
-      '--headless',
-      '--disable-gpu',
-      '--no-sandbox',
-      '--vmodule', // These two options are needed in lambda
-      '--single-process',
-    ],
-    logLevel: 'verbose',
-  })
-  .then((chrome) => {
-    console.log(`Headless Chrome launched with debugging port ${chrome.port}`);
-    launchedChrome = chrome;
-    return chrome;
-  })
-  .then(chrome => CDP.Version({ host: 'localhost', port: chrome.port }))
-  .then(info => console.log('version: ', info))
-  .then(() => CDP({ host: 'localhost', port: launchedChrome.port }))
-  .then((client) => {
-    console.log('Chrome devtools protocol connected');
-    connectedCDP = client;
-    return client;
-  });
+  return puppeteer.launch()
+    .then((chrome) => {
+      launchedChrome = chrome;
+      return chrome;
+    })
+    .then(chrome => chrome.version())
+    .then(version => console.log(`${version} launched.`))
+    .then(() => launchedChrome);
 };
 
 module.exports = {
@@ -40,30 +23,12 @@ module.exports = {
     const [width, height] = size.split(',').map(d => +d);
 
     return launchChrome()
-      .then(() => {
-        const { DOM, Emulation, Network, Page } = connectedCDP;
-
-        return Page.enable()
-          .then(DOM.enable)
-          .then(Network.enable)
-          .then(() => {
-            // set up viewport resolution, etc.
-            const deviceMetrics = {
-              width,
-              height,
-              deviceScaleFactor: 0,
-              mobile: false,
-              fitWindow: false,
-            };
-
-            return Emulation.setDeviceMetricsOverride(deviceMetrics);
-          })
-          .then(() => Page.navigate({ url })) // navigate to target page
-          .then(Page.loadEventFired)
-          .then(() => Emulation.setVisibleSize({ width, height }))
-          .then(Page.captureScreenshot)
-          .then(screenshot => new Buffer(screenshot.data, 'base64'));
-      })
+      .then(chrome => chrome.newPage())
+      .then(page =>
+        page.setViewport({ width, height, deviceScaleFactor: 2 })
+          .then(() => page.goto(url, { waitUntil: 'networkidle' }))
+          .then(() => page.screenshot({ type: 'png' })) // eslint-disable-line
+      )
       .catch((err) => {
         console.error(err);
         throw err;
@@ -71,9 +36,8 @@ module.exports = {
   },
   kill: () => {
     if (launchedChrome) {
-      if (connectedCDP) { connectedCDP.close(); }
       console.log('killing the headless chrome');
-      return launchedChrome.kill();
+      return launchedChrome.close();
     }
     return new Promise(resolve => resolve());
   },
