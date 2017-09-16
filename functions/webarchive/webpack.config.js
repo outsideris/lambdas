@@ -11,5 +11,10 @@ module.exports = {
   externals: {
     'aws-sdk': 'aws-sdk',
   },
+  resolve: {
+    alias: {
+      puppeteer: 'puppeteer/node6/Puppeteer.js',
+    },
+  },
 };
 

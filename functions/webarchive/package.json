@@ -12,5 +12,8 @@
     "chrome-remote-interface": "^0.24.4",
     "filenamify-url": "^1.0.0",
     "puppeteer": "^0.10.2"
+  },
+  "devDependencies": {
+    "webpack": "^3.6.0"
   }
 }

@@ -8,10 +8,10 @@
     "HOME": "/tmp",
     "CHROME_PATH": "/var/task/headless_shell",
     "AWS_S3_BUCKET": "kr.sideeffect.webarchive",
-    "URLS": ""
+    "URLS": "https://blog.outsider.ne.kr/,http://sideeffect.kr/popularconvention,https://github.com/outsideris/,https://github.com/outsideris?tab=repositories,https://github.com/outsideris/angular-summernote,https://github.com/outsideris/popularconvention,https://github.com/angular-ui/AngularJS-Atom,https://stackoverflow.com/users/518864/outsider,https://twitter.com/outsideris,https://www.slideshare.net/rockdoli/presentations,https://atom.io/packages/angularjs"
   },
   "hooks": {
-    "build": "npm run build --prefix ../../ && ../../node_modules/.bin/webpack --config ./webpack.config.js --bail",
+    "build": "npm run build --prefix ../../ && node_modules/.bin/webpack --bail",
     "clean": "rm dist.js"
   }
 }
