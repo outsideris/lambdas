@@ -8,8 +8,7 @@
     "lint": "eslint .",
     "test": "AWS_S3_BUCKET=kr.sideeffect.webarchive-test mocha -t 60000 functions/**/*.spec.js",
     "pretest:docker": "docker build --rm -t test-lambda:test .",
-    "test:docker": "docker run --rm -t test-lambda:test",
-    "build": "mkdir -p lib; if [ ! -e functions/webarchive/headless_shell ]; then wget https://github.com/outsideris/headless-chrome-for-lambda/releases/download/v61.0.3114.0/headless_shell -O functions/webarchive/headless_shell; chmod +x functions/webarchive/headless_shell; fi"
+    "test:docker": "docker run --rm -t test-lambda:test"
   },
   "repository": {
     "type": "git",

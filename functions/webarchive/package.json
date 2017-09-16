@@ -5,7 +5,10 @@
   "main": "index.js",
   "author": "Outsider",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "prebuild": "if [ ! -e headless_shell ]; then wget https://github.com/outsideris/headless-chrome-for-lambda/releases/download/v61.0.3114.0/headless_shell -O headless_shell; chmod +x headless_shell; fi",
+    "build": "webpack --bail"
+  },
   "dependencies": {
     "bluebird": "^3.5.0",
     "chrome-launcher": "^0.6.0",
