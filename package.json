@@ -4,7 +4,7 @@
   "description": "My AWS Lambdas",
   "main": "index.js",
   "scripts": {
-    "postinstall": "find ./functions/* -name package.json -maxdepth 1 -execdir npm install \;",
+    "postinstall": "find ./functions/* -name package.json -maxdepth 1 -execdir npm install \\;",
     "lint": "eslint .",
     "test": "AWS_S3_BUCKET=kr.sideeffect.webarchive-test mocha -t 60000 functions/**/*.spec.js",
     "pretest:docker": "docker build --rm -t test-lambda:test .",
