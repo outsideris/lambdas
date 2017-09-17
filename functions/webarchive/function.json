@@ -3,7 +3,7 @@
   "description": "screenshot web sites",
   "handler": "dist.handle",
   "memory": 448,
-  "timeout": 120,
+  "timeout": 240,
   "environment": {
     "HOME": "/tmp",
     "CHROME_PATH": "/var/task/headless_shell",

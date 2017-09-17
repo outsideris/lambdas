@@ -1,13 +1,22 @@
 const puppeteer = require('puppeteer');
 
 let launchedChrome = null;
+const CHROME_PATH = process.env.CHROME_PATH || undefined;
 
 const launchChrome = () => {
   if (launchedChrome) {
     return new Promise(resolve => resolve(launchedChrome));
   }
 
-  return puppeteer.launch()
+  return puppeteer.launch({
+    executablePath: CHROME_PATH,
+    dumpio: true,
+    args: [
+      '--no-sandbox',
+      '--vmodule',
+      '--single-process',
+    ],
+  })
     .then((chrome) => {
       launchedChrome = chrome;
       return chrome;
