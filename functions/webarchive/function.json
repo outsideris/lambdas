@@ -8,7 +8,7 @@
     "HOME": "/tmp",
     "CHROME_PATH": "/var/task/headless_shell",
     "AWS_S3_BUCKET": "kr.sideeffect.webarchive",
-    "URLS": "https://blog.outsider.ne.kr/,http://sideeffect.kr/popularconvention,https://github.com/outsideris/,https://github.com/outsideris?tab=repositories,https://github.com/outsideris/angular-summernote,https://github.com/outsideris/popularconvention,https://github.com/angular-ui/AngularJS-Atom,https://stackoverflow.com/users/518864/outsider,https://twitter.com/outsideris,https://www.slideshare.net/rockdoli/presentations,https://atom.io/packages/angularjs"
+    "URLS": "https://blog.outsider.ne.kr/,http://sideeffect.kr/popularconvention,https://github.com/outsideris/,https://github.com/outsideris?tab=repositories,https://github.com/outsideris/angular-summernote,https://github.com/outsideris/popularconvention,https://github.com/angular-ui/AngularJS-Atom,https://stackoverflow.com/users/518864/outsider,https://twitter.com/outsideris,https://www.slideshare.net/rockdoli/presentations,https://atom.io/packages/angularjs,https://github.com/outsideris/citizen,https://github.com/outsideris/cla-checker,https://github.com/outsideris/issue-translator-extention,https://github.com/outsideris/slack-invite-automation"
   },
   "hooks": {
     "build": "npm run build",
